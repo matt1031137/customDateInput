@@ -1,0 +1,1265 @@
+@use './mixin.scss';
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    box-sizing: border-box;
+    --main-green-500: #4CAFA9;
+    --main-color-400: #5FDBD3;
+    --main-color-300: #E7FAF8;
+    --gray-1: #2E2E2E;
+    --gray-2: #898989;
+    --gray-3: #DADADA;
+    font-family: "Noto Sans TC", sans-serif !important;
+}
+
+//替換原本select的黑色箭頭(改成figma同規格的灰色)
+select {
+    // background-image: url(http://netech.net.tw/demo/clinic2024/image/down_gray.png) no-repeat right 12px center !important;
+    background-image: url(../image/down_gray.png);
+    color: var(--gray-1);
+
+}
+
+//隱藏number欄位的箭頭
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0;
+    /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    /* Firefox */
+    appearance: textfield;
+    text-align: end;
+}
+
+//微調整原本全域的css
+input:-webkit-autofill {
+    box-shadow: 0 0 0px 1000px white inset !important;
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+}
+
+.pagiantion {
+    margin-top: 12px;
+}
+
+.title {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.selectModal .content .top table th,
+.selectModal .content .top table td {
+    padding: 8px 0;
+
+    button.confirm {
+        font-family: Noto Sans TC, sans-serif;
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 28.96px;
+        text-align: center;
+        color: #fff;
+        border: none;
+        padding: 6px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #5fdbd3;
+    }
+}
+
+
+.selectModal .content .top {
+    max-height: 80vh;
+    overflow-y: scroll;
+}
+
+.selectModal .content .top table th button.confirm,
+.selectModal .content .top table td button.confirm:hover {
+    background-color: #2d9790;
+
+}
+
+
+
+
+
+
+// 共通的表格選單
+//行容器
+.input-row {
+    --row_gap: 20px;
+    // --row_gap: 12px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--row_gap);
+    max-width: 100%;
+    padding: 4px 0;
+
+    &.scrollX {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    //左右到底+padding
+    &.between {
+        // padding: 8px;
+        justify-content: space-between;
+
+        .left {
+            display: flex;
+            gap: 10px 24px;
+            flex-wrap: wrap;
+
+            b {
+                font-weight: 600;
+            }
+        }
+
+        .right {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+        }
+
+        span {
+            color: #4e4e4e;
+            font-size: 14px;
+        }
+    }
+
+    //靠左+padding
+    &.start {
+        padding: 8px;
+
+        span {
+            color: #4e4e4e;
+            font-size: 14px;
+        }
+    }
+
+    &.end {
+        justify-content: flex-end;
+
+
+        @media(max-width:684px) {
+            justify-content: center;
+        }
+    }
+
+    &.arrange {
+        .input-wrapper {
+            width: calc(25% - var(--row_gap)*3/4);
+        }
+    }
+
+    //input容器
+    .input-wrapper {
+        position: relative;
+        margin: 4px 0;
+
+        //隱藏(客戶表單雙重選項時使用)
+        &.hidden {
+            display: none;
+        }
+
+        //預設寬25%(改為預設寬20%更緊湊)
+        //複製.twenty的設定
+        // min-width: calc(25% - var(--row_gap)*3/4);
+
+        // @media(max-width:1255px) {
+        //     min-width: calc(33% - var(--row_gap)*2/3);
+        //     // flex: 1;
+        // }
+
+        // @media(max-width:947px) {
+        //     min-width: calc(50% - var(--row_gap)/2);
+        // }
+
+        // @media(max-width:639px) {
+        //     min-width: 100%;
+        // }
+        min-width: calc(20% - var(--row_gap)*4/5);
+        max-width: calc(20% - var(--row_gap)*4/5);
+
+        @media(max-width:1380px) {
+            min-width: calc(25% - var(--row_gap)*3/4);
+        }
+
+        @media(max-width:1255px) {
+            min-width: calc(33% - var(--row_gap)*2/3);
+            // flex: 1;
+        }
+
+        @media(max-width:947px) {
+            min-width: calc(50% - var(--row_gap)/2);
+        }
+
+        @media(max-width:639px) {
+            min-width: 100%;
+        }
+
+
+
+
+        //預設滿版100%
+        &.full {
+            width: 100%;
+            max-width: 100%;
+            min-width: 100%;
+        }
+
+        //預設寬50%
+        &.half {
+            width: calc(50% - var(--row_gap)/2);
+            max-width: 100%;
+
+            @media(max-width: 947px) {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
+
+        //預設寬50%+鎖死
+        &.half-locked {
+            width: calc(50% - var(--row_gap)/2);
+            max-width: calc(50% - var(--row_gap)/2);
+            min-width: calc(50% - var(--row_gap)/2);
+        }
+
+
+
+
+        //預設寬25%
+        &.quarter {
+            min-width: calc(25% - var(--row_gap)*3/4);
+
+            @media(max-width:1255px) {
+                min-width: calc(33% - var(--row_gap)*2/3);
+                // flex: 1;
+            }
+
+            @media(max-width:947px) {
+                min-width: calc(50% - var(--row_gap)/2);
+            }
+
+            @media(max-width:639px) {
+                min-width: 100%;
+            }
+        }
+
+
+        //預設寬25%+鎖死
+        &.quarter-locked {
+            min-width: calc(25% - var(--row_gap)*3/4);
+        }
+
+
+        //預設寬20%(複製過去預設，這裡先註解)
+        // &.twenty {
+        //     min-width: calc(20% - var(--row_gap)*4/5);
+
+        //     @media(max-width:1380px) {
+        //         min-width: calc(25% - var(--row_gap)*3/4);
+        //     }
+
+        //     @media(max-width:1255px) {
+        //         min-width: calc(33% - var(--row_gap)*2/3);
+        //         // flex: 1;
+        //     }
+
+        //     @media(max-width:947px) {
+        //         min-width: calc(50% - var(--row_gap)/2);
+        //     }
+
+        //     @media(max-width:639px) {
+        //         min-width: 100%;
+        //     }
+
+        // }
+
+        //預設寬15%
+        &.fifteen {
+            min-width: calc(16.66% - var(--row_gap)*5/6);
+            max-width: calc(16.66% - var(--row_gap)*5/6);
+
+            @media(max-width:1380px) {
+                min-width: calc(25% - var(--row_gap)*3/4);
+                max-width: calc(25% - var(--row_gap)*3/4);
+            }
+
+            @media(max-width:1255px) {
+                min-width: calc(33% - var(--row_gap)*2/3);
+                max-width: none;
+                // flex: 1;
+            }
+
+            @media(max-width:947px) {
+                min-width: calc(50% - var(--row_gap)/2);
+            }
+
+            @media(max-width:639px) {
+                min-width: 100%;
+            }
+        }
+
+        //獨立的input(取消max-width)
+        &.auto-w {
+            max-width: none;
+        }
+
+
+        //移動效果的placehoder文字
+        label {
+            position: absolute;
+            left: 12px;
+            top: 10px;
+            font-size: 18px;
+            color: #aaa;
+            pointer-events: none;
+            transition: 0.2s ease all;
+            background-color: white;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            span.red {
+                color: #C72525;
+            }
+
+        }
+
+        //一般input及密碼
+        input,
+        input[type="password"] {
+            border: 2px solid var(--gray-3);
+            width: 100%;
+            padding: 6px 12px !important;
+            font-size: 16px;
+            outline: none;
+            border-radius: 5px;
+            color: var(--gray-1);
+            background-color: white !important;
+            min-height: 36.05px;
+
+
+
+            &:focus+label,
+            &:not(:placeholder-shown)+label {
+                top: -12px;
+                left: 12px;
+                font-size: 12px;
+                padding: 5px;
+                background-color: white;
+                color: var(--main-green-500);
+                font-size: 14px;
+                font-weight: 400;
+                // 2026-05-08
+                z-index: 2;
+            }
+
+            //純英文字型大小稍微不同，用不同間距
+            &:focus+label.email,
+            &:not(:placeholder-shown)+label.email {
+                padding: 1px 8px 2px;
+            }
+
+
+            &:focus {
+                border: 2px solid #4cafa9;
+            }
+
+
+            &[disabled] {
+                opacity: 0.5;
+                pointer-events: none;
+            }
+
+            &.hidden {
+                display: none;
+            }
+        }
+
+        //日期input
+        input[type="date"] {
+            color: #2D2D2D;
+            padding: 5px 12px !important;
+
+            &+label {
+                left: 10px;
+                top: 10px;
+                font-size: 18px;
+                padding-right: 40px;
+                height: 24px;
+                user-select: none;
+                background-color: white;
+                color: #aaa;
+            }
+
+
+            &:focus+label,
+            &.has-value+label {
+                top: -12px;
+                left: 12px;
+                font-size: 12px;
+                padding: 5px;
+                background-color: white;
+                color: var(--main-green-500);
+                font-size: 14px;
+                font-weight: 400;
+            }
+
+            &:focus {
+                border: 2px solid var(--main-green-500);
+            }
+
+        }
+
+        //下拉式選單select的input
+        select {
+            width: 100%;
+            padding: 6px 30px 6px 12px;
+            font-size: 18px;
+            outline: none;
+            border-radius: 5px;
+            color: var(--gray-1);
+            background-size: 12px;
+            border: 2px solid var(--gray-3);
+            background-color: white;
+
+
+            &:focus+label,
+            &.has-value+label {
+                top: -12px;
+                left: 12px;
+                font-size: 12px;
+                padding: 5px;
+                background-color: white;
+                color: var(--main-green-500);
+                font-size: 14px;
+                font-weight: 400;
+            }
+
+            &:focus {
+                border: 2px solid var(--main-green-500);
+            }
+
+            option {
+                color: var(--gray-1);
+            }
+        }
+
+        //文字方塊
+        textarea {
+            border-radius: 5px;
+            outline: none;
+            border: 2px solid var(--gray-3);
+            font-size: 18px;
+            color: var(--gray-1);
+
+            &:focus+label,
+            &.has-value+label {
+                top: -12px;
+                left: 12px;
+                font-size: 12px;
+                padding: 5px;
+                background-color: white;
+                color: var(--main-green-500);
+                font-size: 14px;
+                font-weight: 400;
+            }
+
+            &:focus {
+                border: 2px solid var(--main-green-500);
+            }
+        }
+
+        &.fit {
+            width: fit-content;
+        }
+
+        //禁止使用的input
+        &.disabled {
+            input {
+                opacity: 0.4;
+                pointer-events: none;
+            }
+
+            label {
+                opacity: 0.4;
+            }
+        }
+
+        // 2026-05-08 追加的上浮div區塊
+        .float-div {
+            --padding-right: 48px;
+            width: calc(100% - 48px);
+            height: 90%;
+            position: absolute;
+            left: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            // padding-right: var(--padding-right);
+            background-color: rgb(255, 255, 255);
+            align-items: center;
+
+            span {
+                color: #707070;
+            }
+
+
+
+            input {
+                border: none;
+                text-align: center;
+
+
+                &.year {
+                    flex: 2;
+                }
+
+                &.month {
+                    flex: 1;
+                }
+
+                &.day {
+                    flex: 1;
+                }
+
+            }
+        }
+    }
+
+    //放checkBox的容器
+    .check-box-wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px 40px;
+        flex-wrap: wrap;
+
+        .check-item {
+            width: 10%;
+            min-width: 168px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 10px;
+
+            span {
+                color: var(--gray-1);
+                font-size: 18px;
+                font-weight: 400;
+            }
+        }
+
+        //特殊寬度(客戶編輯頁)
+        &.w-376 {
+            max-width: 376px;
+        }
+    }
+
+    //放radio的容器
+    .radio-box {
+        display: flex;
+        gap: 4px;
+        border: 2px solid var(--gray-3);
+        padding: 6px 12px;
+        font-size: 16px;
+        border-radius: 5px;
+        color: var(--gray-1);
+        background-color: white;
+        min-height: 36.05px;
+        min-width: calc(20% - var(--row_gap)*4/5);
+
+
+        &.half {
+            min-width: calc(40% - var(--row_gap)*4/5);
+            max-width: calc(40% - var(--row_gap)*4/5);
+
+
+            @media(max-width:1255px) {
+                min-width: calc(33% - var(--row_gap)*2/3);
+                // flex: 1;
+            }
+
+            @media(max-width:947px) {
+                min-width: calc(50% - var(--row_gap)/2);
+            }
+
+            @media(max-width:639px) {
+                min-width: 100%;
+            }
+        }
+
+        @media(max-width:1255px) {
+            min-width: calc(33% - var(--row_gap)*2/3);
+            // flex: 1;
+        }
+
+        @media(max-width:947px) {
+            min-width: calc(50% - var(--row_gap)/2);
+        }
+
+        @media(max-width:639px) {
+            min-width: 100%;
+        }
+
+        //預設寬25%
+        &.quarter {
+            min-width: calc(25% - var(--row_gap)*3/4);
+
+            @media(max-width:1255px) {
+                min-width: calc(33% - var(--row_gap)*2/3);
+                // flex: 1;
+            }
+
+            @media(max-width:947px) {
+                min-width: calc(50% - var(--row_gap)/2);
+            }
+
+            @media(max-width:639px) {
+                min-width: 100%;
+            }
+        }
+
+
+    }
+
+    //特殊寬度(客戶編輯頁)
+    &.w-20 {
+        width: 20%;
+        min-width: 168px;
+        padding: 0;
+
+        &.max-168 {
+            max-width: 168px;
+
+            @media(max-width:550px) {
+                max-width: 100%;
+            }
+        }
+
+        @media(max-width:550px) {
+            width: 100%;
+        }
+    }
+
+}
+
+//自訂hr格線
+// div.border {
+//     width: 100%;
+//     margin: 12px 0;
+//     display: flex;
+//     justify-content: flex-start;
+//     align-items: center;
+//     position: relative;
+
+//     p {
+//         color: #8a8a8a;
+//         font-size: 12px;
+//         position: absolute;
+//         left: 0;
+//         background-color: white;
+//         padding-right: 8px;
+//     }
+
+//     span {
+//         flex: 1;
+//         border-bottom: 0.5px solid #eee;
+//     }
+// }
+
+//新樣式自訂格線
+.dot-border {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 18px;
+
+
+    @include mixin.lg {
+        font-size: 16px;
+    }
+
+    .dotted-line {
+        flex: 1;
+        height: 30px;
+        background-image: url('../image/list/dashed-line.png');
+        background-size: contain;
+        background-position: left center;
+        background-repeat: no-repeat;
+
+    }
+}
+
+
+//自訂on/off的switch開關
+$toggle-width: 32px;
+$toggle-height: 14px;
+$toggle-padding: 4px;
+$toggle-color: #a0cef3;
+
+.switch-box {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    justify-content: flex-start;
+
+    span {
+        font-size: 18px;
+        color: #4e4e4e;
+
+        &.locked {
+            color: red;
+        }
+    }
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: $toggle-width;
+    height: $toggle-height;
+    overflow: visible;
+
+    input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #e6e6e6;
+        transition: 0.4s;
+        border-radius: $toggle-height;
+
+        &::before {
+            content: "";
+            position: absolute;
+            height: $toggle-height*1.2;
+            width: $toggle-height*1.2;
+            left: 0;
+            bottom: -1px;
+            background-color: rgb(151, 150, 150);
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+    }
+
+    input:checked+.slider {
+        background-color: $toggle-color;
+
+        &::before {
+            transform: translateX(calc($toggle-width / 2));
+            background-color: #3b83bd;
+        }
+    }
+}
+
+
+//確定新增按鈕
+.fixed-btn-box {
+    position: fixed;
+    right: 24px;
+    bottom: calc(47px + 30px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+
+    button {
+        color: white;
+        border: none;
+        width: 68px;
+        height: 68px;
+        // font-weight: 500;
+        // font-size: 1rem;
+        border-radius: 50%;
+        // letter-spacing: 2px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0px 1px 10px rgb(160, 160, 160);
+        position: relative;
+
+        span {
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+
+
+        &.confirm-add {
+            background-color: #5fdbd3;
+            color: #5fdbd3;
+
+            &:hover {
+                background-color: #4bbbb3;
+                color: #4bbbb3;
+            }
+        }
+
+        &.return {
+            background-color: #4cafa9;
+            color: #4cafa9;
+
+            &:hover {
+                background-color: #2b7973;
+                color: #2b7973;
+
+            }
+        }
+
+
+    }
+}
+
+
+//2025-10-21 修改後自訂面板
+.selectModal-new {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+
+    &.active {
+        display: block;
+    }
+
+    //面版內容
+    .modal {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        background-color: rgb(255, 255, 255);
+        padding: 0px;
+        box-shadow: 1px 1px 10px gray;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 16px;
+        border-radius: 8px;
+        min-width: 60%;
+        --box-paddindg: 26px;
+        animation: fadeIn 0.6s forwards;
+        max-height: 100vh;
+
+        @include mixin.lg {
+            --box-paddindg: 12px;
+            gap: 8px;
+        }
+
+
+        //進入動畫
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+
+        //較小的面版
+        &.small {
+            min-width: 40%;
+        }
+
+
+        @media(max-width:1200px) {
+            min-width: 80%;
+        }
+
+        @media(max-width:860px) {
+            min-width: 100%;
+        }
+
+        //上方
+        .top {
+            width: calc(100% - var(--box-paddindg) * 2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--box-paddindg) 0 10px;
+            margin: 0 var(--box-paddindg);
+            border-bottom: 1px solid #2E2E2E;
+
+
+            .title {
+                width: fit-content;
+                padding: 0;
+                font-size: 24px;
+                font-weight: 500;
+                border-bottom: none;
+                display: flex;
+                align-items: baseline;
+                gap: 8px;
+
+                @include mixin.lg {
+                    font-size: 20px;
+                }
+
+                span.gray {
+                    font-size: 16px;
+                    color: gray;
+                }
+            }
+
+            button.closeBtn {
+                border: none;
+                background: transparent;
+                cursor: pointer;
+
+                img {
+                    width: 32px;
+                    opacity: 0.5;
+                }
+            }
+
+
+        }
+
+        //主內容區
+        .main {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 0px var(--box-paddindg) 0px;
+            max-height: 560px;
+            overflow-y: auto;
+
+
+            //左右對齊
+            .between {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                //放複數input的容器
+                .btns-box {
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 8px;
+                }
+            }
+
+            //搜尋欄位
+            input.search {
+                background: url('../image/search.svg') no-repeat left 10px center;
+                padding-left: 36px;
+
+
+                @include mixin.lg {
+                    font-size: 16px;
+                }
+            }
+
+
+            //副標題
+            .subTitle {
+                font-size: 22px;
+                font-weight: 500;
+
+
+                @include mixin.lg {
+                    font-size: 18px;
+                }
+            }
+
+            //表格
+            .table-box {
+                width: 100%;
+                // min-height: 160px;
+                min-height: 360px;
+                max-height: 360px;
+                overflow-y: auto;
+                scrollbar-width: thin;
+                scrollbar-color: var(--gary-3) transparent; // thumb顏色 + track顏色
+
+                /* Chrome / Safari / Edge (WebKit) */
+                &::-webkit-scrollbar {
+                    width: 8px; // 必須要設定寬度，否則thumb不一定會顯示
+                }
+
+                &.no-min-height {
+                    min-height: fit-content;
+                }
+
+                @include mixin.lg {
+                    min-height: 300px;
+                    max-height: 300px;
+                }
+
+                table {
+                    width: 100%;
+                    overflow-y: hidden;
+
+                    td,
+                    th {
+                        text-align: center;
+                        padding: 5px;
+                        font-size: 18px;
+
+                        @include mixin.lg {
+                            font-size: 16px;
+                            padding: 4px;
+                        }
+
+                        &.text-start {
+                            text-align: start;
+                        }
+                    }
+
+                    thead {
+                        position: sticky;
+                        top: -1px;
+                        z-index: 99;
+
+                        tr {
+
+                            th {
+                                border: 1px solid white;
+                                border-bottom: none;
+                                background-color: var(--main-green-500);
+                                color: white;
+                                font-weight: 700;
+                            }
+                        }
+                    }
+
+                    tbody {
+                        tr {
+                            td {
+                                border: 1px solid var(--gray-3);
+                                font-weight: 400;
+
+                                button {
+                                    font-size: 16px;
+                                    font-weight: 400;
+                                    border-radius: 4.5px;
+                                    padding: 4px 16px;
+                                    color: white;
+                                    background-color: var(--main-color-400);
+                                    cursor: pointer;
+                                    border: none;
+                                    outline: none;
+
+                                    @include mixin.lg {
+                                        padding: 2px 12px;
+                                    }
+
+                                    &.red {
+                                        background-color: #DB4F4F;
+                                    }
+
+                                    &:hover {
+                                        filter: brightness(0.9);
+                                    }
+                                }
+
+                                select {
+                                    @include mixin.lg {
+                                        font-size: 16px;
+                                        padding: 2px 30px 1px 12px;
+                                    }
+                                }
+
+
+                            }
+
+                            &:nth-child(even) {
+                                background-color: var(--main-color-300);
+                            }
+
+
+                            //無法選擇時
+                            &.disabled {
+                                background-color: #F1F1F1;
+                                pointer-events: none;
+                            }
+
+                            //搜尋隱藏時
+                            &.hidden {
+                                display: none;
+                            }
+                        }
+
+                        &.bg-white {
+                            tr {
+                                background-color: white;
+
+                                //無法選擇時
+                                &.disabled {
+                                    background-color: #F1F1F1;
+                                    pointer-events: none;
+                                }
+                            }
+                        }
+                    }
+
+
+
+                }
+            }
+        }
+
+        //覆蓋pagination設定
+        .pagiantion {
+            margin: 0;
+            padding: 0;
+            font-size: 18px;
+            justify-content: center;
+            padding: 0 var(--box-paddindg);
+
+            @include mixin.lg {
+                font-size: 16px;
+            }
+
+            ul {
+                @include mixin.lg {
+                    gap: 8px;
+                }
+            }
+
+
+            div {
+                input {
+                    padding: 2px 10px;
+                    border-radius: 4.5px;
+
+                    @include mixin.lg {
+                        padding: 0 8px;
+                    }
+
+                }
+
+                button {
+                    padding: 1px 16px 3px;
+
+                    @include mixin.lg {
+                        font-size: 16px;
+                    }
+
+
+                    &:hover {
+                        filter: brightness(90%);
+                    }
+                }
+            }
+        }
+
+        //下方
+        .footer {
+            width: 100%;
+            border-top: 1px solid #DADADA;
+            padding: 20px var(--box-paddindg);
+
+            @include mixin.lg {
+                padding: 12px var(--box-paddindg);
+            }
+
+
+
+            .btn-box {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 26px;
+
+                @include mixin.lg {
+                    gap: 12px;
+                }
+
+                button {
+                    font-family: Noto Sans TC, sans-serif;
+                    font-size: 20px;
+                    font-weight: 400;
+                    line-height: 28.96px;
+                    text-align: center;
+                    color: #fff;
+                    border: none;
+                    padding: 6px 20px;
+                    border-radius: 5px;
+                    cursor: pointer;
+
+                    @include mixin.lg {
+                        font-size: 16px;
+                        padding: 4px 12px;
+                    }
+
+                    &.confirm {
+                        background-color: var(--main-green-500);
+                    }
+
+
+                    &.delete {
+                        background-color: #DB4F4F;
+                    }
+
+                    &.cancel {
+                        background-color: var(--gray-2);
+                    }
+
+                    &:hover {
+                        filter: brightness(0.9);
+                    }
+
+                    &.disabled {
+                        opacity: 0.5;
+                        user-select: none;
+                        pointer-events: none;
+                    }
+                }
+            }
+        }
+
+    }
+
+
+
+
+    //RWD(覆蓋共通的input-row的間距
+    .input-row {
+        @include mixin.lg {
+            --row_gap: 8px;
+        }
+    }
+
+}

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026-05-07 客製化日期選單</title>
+    <link rel="stylesheet" href="./css/editPage.css">
+
+</head>
+
+<body>
+    <div class="edit-box">
+        <div class="input-row">
+            <!-- 2025-05-08 父容器追加一個class讓js可以抓到結構做控制 -->
+            <div class="input-wrapper fake-data-input">
+                <input type="date" name="cu_birth" data-isoff="true" value="1932-11-17" class="has-value">
+                <label>生日</label>
+
+                <!-- 先丟3個絕對位置的INPUT試試看 -->
+                <div class="float-div">
+                    <input type="number" value="1932" class="year" maxlength="4">
+                    <span>/</span>
+                    <input type="number" value="11" class="month" maxlength="2">
+                    <span>/</span>
+                    <input type="number" value="17" class="day" maxlength="2">
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+    <!-- 原本的js -->
+    <script>
+        //日期input的文字上浮效果
+        const dateInputs = document.querySelectorAll('.input-wrapper input[type="date"],.input-wrapper input[type="time"]')
+        dateInputs.forEach(inputDate => {
+            inputDate.addEventListener('change', () => {
+                if (inputDate.value !== '') {
+                    inputDate.classList.add('has-value');
+                } else {
+                    inputDate.classList.remove('has-value');
+                }
+            });
+
+            //一併加上日期input可點擊欄位開啟選單(方便)
+            inputDate.addEventListener('click', (e) => {
+
+                //2026-04-29 檢查是否有關閉功能
+                const isOff = inputDate.dataset.isoff == 'true'
+
+                console.log(isOff)
+                if (isOff) {
+                    console.log('不觸發')
+                } else {
+                    try {
+                        inputDate.showPicker();
+                    } catch (err) {
+                        // 不影響行為，只避免 console 紅字
+                    }
+                }
+
+            })
+        });
+    </script>
+
+    <!-- 追加的js -->
+    <script>
+        //需要做控制的容器
+        const fakeDateInputs = document.querySelectorAll('.fake-data-input')
+
+        fakeDateInputs.forEach((fakeDateInput) => {
+            //背後的真正date的input
+            const actualDateInput = fakeDateInput.querySelector('input[type="date"]')
+
+            //假的年月日的input結構
+            const fakeYear = fakeDateInput.querySelector('.year')
+            const fakeMonth = fakeDateInput.querySelector('.month')
+            const fakeDay = fakeDateInput.querySelector('.day')
+
+            //假日期input更新真正date的函式
+            function updateDate() {
+                const year = fakeYear.value
+                const month = fakeMonth.value
+                const day = fakeDay.value
+                const date = `${year}-${month}-${day}`
+                actualDateInput.value = date
+            }
+
+            //當真正input的值改變時，拆分成年/月/日，並且填入假input
+            actualDateInput.addEventListener('change', () => {
+                const dateText = actualDateInput.value.split('-')
+                fakeYear.value = dateText[0]
+                fakeMonth.value = dateText[1]
+                fakeDay.value = dateText[2]
+            })
+
+            //三個假date在focus時自動全選(模擬真正的date)
+            fakeYear.addEventListener('focus', (e) => {
+                requestAnimationFrame(() => {
+                    e.target.select()
+                })
+            })
+
+            fakeMonth.addEventListener('focus', (e) => {
+                requestAnimationFrame(() => {
+                    e.target.select()
+                })
+            })
+
+            fakeDay.addEventListener('focus', (e) => {
+                requestAnimationFrame(() => {
+                    e.target.select()
+                })
+            })
+
+            //監控假input的值，當有變化時，組合成日期，並且填入真正input
+            fakeYear.addEventListener('change', () => {
+                updateDate()
+            })
+
+            fakeMonth.addEventListener('change', () => {
+                updateDate()
+            })
+            fakeDay.addEventListener('change', () => {
+                updateDate()
+            })
+
+
+            //blur 處理最大跟最小，還有補0
+            //年份
+            fakeYear.addEventListener('blur', () => {
+                // 最大及最小
+                if (fakeYear.value > 2500 || fakeYear.value < 1900) {
+                    fakeYear.value = new Date().getFullYear()
+                }
+                updateDate()
+            })
+
+
+            //月份
+            fakeMonth.addEventListener('blur', () => {
+                // 最大
+                if (fakeMonth.value > 12) {
+                    fakeMonth.value = 12
+                }
+                //最小
+                if (fakeMonth.value < 1) {
+                    fakeMonth.value = 1
+                }
+
+                if (fakeMonth.value.length === 1) {
+                    fakeMonth.value = fakeMonth.value.padStart(2, '0')
+                }
+
+                updateDate()
+            })
+
+            // 日期
+            fakeDay.addEventListener('blur', () => {
+                // 最大
+                if (fakeDay.value > 31) {
+                    fakeDay.value = new Date(fakeYear.value, fakeMonth.value, 0).getDate();
+                    // console.log(new Date(fakeYear.value, fakeMonth.value, 0).getDate())
+                }
+                //最小
+                if (fakeDay.value < 1) {
+                    fakeDay.value = 1
+                }
+                updateDate()
+            })
+
+
+
+
+            //假date在keyup檢查自動跳轉的邏輯
+            //年份
+            fakeYear.addEventListener('keyup', () => {
+
+                // 自動跳轉
+                if (fakeYear.value.length == 4) {
+                    setTimeout(() => {
+                        fakeMonth.focus()
+                    }, 100)
+                }
+            })
+
+            //月份
+            fakeMonth.addEventListener('keyup', () => {
+                // 自動跳轉
+                if (fakeMonth.value.length == 2) {
+                    setTimeout(() => {
+                        fakeDay.focus()
+                    }, 0)
+                }
+            })
+
+
+
+
+        })
+    </script>
+
+</body>
+
+</html>

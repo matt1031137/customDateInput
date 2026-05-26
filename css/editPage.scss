@@ -1,0 +1,511 @@
+@use 'formBox_new';
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-family: "Noto Sans TC", sans-serif;
+    --black-1: #2E2E2E;
+    --gray-2: #898989;
+    --gary-3: #DADADA;
+    --gray-4: #F1F1F1;
+    --main-500: #4CAFA9;
+    --main-400: #5FDBD3;
+    --main-300: #E7FAF8;
+    --blue-500: #0075CC;
+}
+
+
+.edit-box {
+    width: 100%;
+    // padding: 50px 86px;
+    padding: 25px 28px;
+
+    // @media (max-width:1400px) {
+    //     padding: 20px 12px;
+    // }
+
+    @media(max-width:1200px) {
+        padding: 25px 8px;
+    }
+
+}
+
+
+
+
+#min-width-box {
+    position: relative;
+
+    //抬頭及搜尋區塊
+    .title {
+        border-bottom: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+
+
+        h3 {
+            font-size: 28px;
+            font-weight: 400;
+        }
+
+    }
+
+
+    //編輯表單主容器
+    .form-box {
+        width: 100%;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+
+        //上方選單
+        .nav {
+            width: 100%;
+            // border-bottom: 2px solid var(--gray-2);
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+
+            span {
+                display: inline-block;
+                font-size: 20px;
+                font-weight: 400;
+                padding: 16px 20px 12px;
+                color: var(--gray-2);
+                cursor: pointer;
+
+                &.active {
+                    font-weight: 500;
+                    color: var(--blue-500);
+                    border-bottom: 5px solid var(--blue-500);
+                }
+            }
+        }
+
+        //下方input選單(覆蓋原本_formBox_new的設定)
+        .input-box {
+            padding: 14px 40px 40px;
+            display: none;
+
+            @media(max-width:1200px) {
+                padding: 14px 8px 40px;
+            }
+
+            //開啟面版後顯示
+            &.active {
+                display: block;
+            }
+
+
+            //覆蓋原本gap設定
+            .input-row {
+                // --row_gap: 40px;
+                gap: 16px var(--row_gap);
+
+                //覆蓋原本系統編號的字型大小跟顏色
+                div.gray-16 {
+                    span {
+                        font-size: 16px;
+                        color: var(--gray-2);
+                    }
+                }
+
+            }
+
+            //第二層tab小面板
+            .nav-second {
+                width: 100%;
+                // border-bottom: 2px solid var(--gray-2);
+                box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+
+                span {
+                    display: inline-block;
+                    font-size: 18px;
+                    font-weight: 400;
+                    padding: 12px 18px 8px;
+                    color: var(--gray-2);
+                    cursor: pointer;
+
+                    &.active {
+                        color: var(--blue-500);
+                        border-bottom: 2px solid var(--blue-500);
+                    }
+                }
+            }
+
+            //第二層tab內容切換容器
+            .input-box-second {
+                width: 100%;
+                padding: 12px;
+                box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.15);
+                display: none;
+
+                &.active {
+                    display: block;
+                }
+            }
+
+
+        }
+
+        //覆蓋原本border線條
+        .dot-border {
+            opacity: 0.5;
+            // margin: 16px 0;
+        }
+
+        //放置中追加表格行按鈕的容器
+        .center {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &.btn-box {
+                button {
+                    background-color: var(--main-400);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border: none;
+                    outline: none;
+                    border-radius: 50%;
+                    width: 35px;
+                    aspect-ratio: 1 / 1;
+                    cursor: pointer;
+
+                    img {
+                        width: 24px;
+                    }
+
+                    &:hover {
+                        filter: brightness(0.8);
+                    }
+                }
+
+                @media(max-width:684px) {
+                    display: none;
+                }
+            }
+
+
+        }
+    }
+
+
+    //多選switch樣式
+    //帳號狀態設定容器(垂直排列子項目)
+    ul.account-state-list {
+        position: relative;
+        // z-index: 2;
+        width: 215px;
+        background-color: white;
+        padding: 8px;
+        display: none;
+        filter: drop-shadow(0px 0px 1px rgb(185, 185, 185));
+        border-radius: 4px;
+        transform: translateY(-10px);
+        transition: all 1s ease-in-out;
+        visibility: hidden;
+        height: 0px;
+        color: #4e4e4e;
+        font-size: 18px;
+        margin-bottom: 16px;
+
+        &.active {
+            display: block;
+            visibility: visible;
+            height: auto;
+            transform: translateY(0%);
+        }
+
+        li {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+
+            span.choice {
+                min-width: 42px;
+                text-align: center;
+            }
+
+            &:nth-last-child(1) {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    //門店/權限/職稱表格
+    table.account-table {
+        margin-top: 8px;
+        margin-bottom: 16px;
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid rgb(218, 218, 218);
+
+
+        //組織資訊表格
+        &.personal {
+            width: 68%;
+
+
+            &.mobile {
+                width: 100%;
+            }
+
+            tr {
+                th {
+                    background-color: #4cafa9;
+                    color: white;
+                    font-size: 14px;
+
+                    // &:nth-child(1) {
+                    //     width: 10%;
+                    // }
+
+                    // &:nth-child(2) {
+                    //     width: 45%;
+                    // }
+
+                    // &:nth-child(3) {
+                    //     width: 45%;
+                    // }
+
+                }
+
+                td {
+                    color: #2d2d2d;
+                    font-size: 14px;
+
+                    &:hover {
+                        background-color: #f8ffff;
+                    }
+                }
+            }
+        }
+
+        // @media(max-width:684px) {
+        //     min-width: 900px;
+        // }
+        @media(max-width:890px) {
+            display: none;
+        }
+
+        //手機板帳號啟用表格
+        &.mobile {
+            display: none;
+
+            @media(max-width:890px) {
+                display: table;
+                width: 100%;
+
+                tbody {
+                    tr {
+                        td {
+                            cursor: default !important;
+                        }
+                    }
+                }
+            }
+
+
+        }
+
+
+        tr {
+
+            th,
+            td {
+                border-collapse: collapse;
+                border: 1px solid #dadada;
+                text-align: center;
+                padding: 8px;
+                font-size: 18px;
+
+            }
+
+            th,
+            td.mobile-th {
+                background-color: #4CAFA9;
+                color: white;
+                font-weight: 700;
+            }
+
+            td {
+                color: #2d2d2d;
+                font-weight: 500;
+
+                &.pointer {
+                    cursor: pointer;
+                }
+
+
+                &.with-caption {
+                    &::before {
+                        content: attr(data-caption);
+                        /* 抓取 data-caption 的值 */
+                        display: block;
+                        font-size: 14px;
+                        color: #555;
+
+                    }
+                }
+
+                //td無法選擇的狀態(反灰且無法使用)
+                &.disabled {
+                    background-color: #F1F1F1;
+                    pointer-events: none;
+                }
+
+
+                //設定職稱按鈕
+                &.openJob {
+                    .flexBox {
+                        display: flex;
+                        width: 100%;
+                        gap: 8px;
+                        justify-content: center;
+                        flex-wrap: wrap;
+
+                        button.icon-job {
+                            border: none;
+                            background-color: rgb(243, 211, 239);
+                            padding: 4px 8px;
+                            border-radius: 4px;
+                            color: #2d2d2d;
+                            user-select: none;
+                            font-size: 16px;
+                            font-weight: 400;
+
+                            &:hover {
+                                background-color: rgb(230, 178, 223);
+                            }
+                        }
+
+                    }
+                }
+
+                //設定權限按鈕
+                &.openAccess {
+                    .flexBox {
+                        display: flex;
+                        width: 100%;
+                        gap: 8px;
+                        justify-content: center;
+                        flex-wrap: wrap;
+
+                        button.icon-access {
+                            border: none;
+                            background-color: rgb(247, 206, 132);
+                            padding: 4px 8px;
+                            border-radius: 4px;
+                            color: #2d2d2d;
+                            user-select: none;
+                            font-size: 16px;
+                            font-weight: 400;
+
+
+                            &:hover {
+                                background-color: rgb(228, 184, 104);
+                            }
+                        }
+
+                    }
+                }
+
+                //左右間隔css
+                .button-box{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap:4px;
+                }
+
+                //自訂按鈕
+                button {
+                    font-size: 16px;
+                    font-weight: 400;
+                    border-radius: 4.5px;
+                    padding: 4px 16px;
+                    color: white;
+                    background-color: var(--main-color-400);
+                    cursor: pointer;
+                    border: none;
+                    outline: none;
+
+                    &.red {
+                        background-color: #DB4F4F;
+                    }
+
+                    &.gray {
+                        background-color: rgb(180, 180, 180);
+                    }
+
+                    &:hover {
+                        filter: brightness(0.9);
+                    }
+
+                    &.squire {
+                        padding: 4px 8px;
+                    }
+
+                    img {
+                        width: 24px;
+                        margin-bottom: 2px;
+                    }
+
+
+                }
+
+
+
+                //追加行(方便操作掛td上)
+                &.addRow {
+                    button.addRowBtn {
+                        background-color: rgb(107, 116, 146);
+                        padding: 6px 6px 4px;
+                        border: none;
+                        border-radius: 50%;
+                    }
+
+                    &:hover {
+                        background-color: white;
+
+                        button.addRowBtn {
+                            background-color: rgb(66, 73, 95);
+                        }
+
+                    }
+
+                }
+
+            }
+
+            //tr無法選擇的狀態(反灰且無法使用)
+            &.disabled {
+                background-color: #F1F1F1;
+                pointer-events: none;
+            }
+        }
+
+        &.bg-white {
+            tr {
+                background-color: white;
+
+                //無法選擇時
+                &.disabled {
+                    background-color: #F1F1F1;
+                    pointer-events: none;
+                }
+            }
+        }
+
+
+    }
+
+    &:nth-last-child(1) {
+        margin-bottom: 24px;
+    }
+
+}

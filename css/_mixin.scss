@@ -1,0 +1,71 @@
+* {
+  --brand-color1: #50C7E7;
+  --brand-color2: #0078C4;
+  --brand-color3: #005489;
+  --brand-color4: #FFC226;
+  --text-primary: #000000;
+  --text-secondary: #7A7F84;
+}
+
+@mixin xxxl {
+  @media (max-width: 1900px) {
+    @content;
+  }
+}
+
+
+@mixin xxl {
+  @media (max-width: 1536px) {
+    @content;
+  }
+}
+
+@mixin xl2 {
+  @media (max-width: 1380px) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (max-width: 1200px) {
+    @content;
+  }
+}
+
+
+@mixin lg {
+  @media (max-width: 990px) {
+    @content;
+  }
+}
+
+@mixin md2 {
+  @media (max-width: 820px) {
+    @content;
+  }
+}
+
+
+@mixin md {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin sm2 {
+  @media (max-width: 570px) {
+    @content;
+  }
+}
+
+@mixin sm {
+  @media (max-width: 480px) {
+    @content;
+  }
+}
+
+@mixin xsm {
+  @media (max-width: 300px) {
+    @content;
+  }
+}
